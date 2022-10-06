@@ -1,17 +1,16 @@
-# SonicSurface
-An Open ultrasonic phased-array for applications in acoustic levitation, haptic feedback, directive audio and many more.
+# The Midi Levitator
+Controlling objects floating in space with music, using a midi interface.
 
+ ![Floating Balls](FloatingBalls.jpg)![Floating Balls](FloatingBalls.jpg)![Floating Balls](FloatingBalls.jpg)![Floating Balls](FloatingBalls.jpg)
+
+
+A midi keyboard connected to [Ableton Live](https://en.wikipedia.org/wiki/Ableton_Live) outputs serial commands using [Max software](https://en.wikipedia.org/wiki/Max_(software)) to an ESP32 microcontroller that is controlling a [SonicSurface](https://github.com/upnalab/SonicSurface) acoustic levitator to float objects in space that respond to the keyboard.
+
+Video: https://youtu.be/8fpSVYPssQY
 
 # Contents of this Repository
-- [Algorithms](Algorithms) - Algorithms to generate different patterns
-- [Calibration](Calibration) - Preparing ESP32 data files for differing board orientations
-- [Electronics](Electronics) - PCB gerber files and bill of materials
-- [Firmware](Firmware) - Code to be upload in the FPGA boards that control the arrays
-- [Mech](Mech) - Mechanical parts for 3d printing or lasercutting
+- [ESP32Code](Firmware/ESP32%20controller) - Software to run on an ESP32 microcontroller that controls the [SonicSurface](https://github.com/upnalab/SonicSurface).
+- [Max Software](MaxSoftware) - [Software](https://en.wikipedia.org/wiki/Max_(software)) that runs on [Ableton Live](https://en.wikipedia.org/wiki/Ableton_Live) which accepts midi input and sends commands via serial port to the ESP32.
+- Project Report- Coming soon!
 
-
-# How to Assemble and example Applications
-- Instructables: https://www.instructables.com/SonicSurface-Phased-array-for-Levitation-Mid-air-T/
-- Video: https://www.youtube.com/watch?v=vAEZvYlUnEM
-- Paper: https://doi.org/10.3390/app11072981
 
