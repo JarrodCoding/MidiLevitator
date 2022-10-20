@@ -9,6 +9,10 @@ Commands, that are case sensitive, are entered through a serial terminal to the 
 
 Set the focal point to the centre of the SonicSurface cube. This is the place to launch objects into the levitation field.
 
+- current 
+
+Print out the current position of the focal point.
+
 - test 
 
 This starts a test pattern that will run forever. The pattern is a square spiral that grows from the centre in 5mm increments until the the side length exceeds 65mm. The first spiral starts at the current height and increases in 5mm increments until it reaches 185 mm at which point it spirals in decreasing heights until it reaches 55 mm. The object is moved in 1mm increments 40 times per second. The levitated object traverses a large region which is good for testing trapping stability throughout.

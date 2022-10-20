@@ -7,9 +7,11 @@
 //
 // Four bytes are expected from Ableton
 // Byte 1: 255 (sync byte)
-// Byte 2: <control> - [0:255]
-// Byte 3: <value MSB> - [0:255]
-// Byte 4: <value LSB> - [0:255]
+// Byte 2: <dialX> 
+// Byte 3: <dialY>
+// Byte 4: <dialZ>
+// Byte 5: <keyboard>
+// Byte 6: <keyboardVel> 
 //
 // --------------------------------------------------
 
@@ -103,6 +105,7 @@ void testAxis();
 
 
 /* Setup*/
+//Setup serial
 void setup() {
   //Serial.begin(230400); // this serial is for receiving commands and sending debug info to the computer
   Serial2.begin(230400, SERIAL_8N1, 19,21); //RX2 TX2 This serial communicates with the array
@@ -146,7 +149,7 @@ void focusArrayAtPoints() {
 
   sendBuffer();
 }
-
+//main operation
 int previousButton = HIGH;
 int cyclesButtonHigh = 0;
 enum ePointsStatus {statusOff, statusFocus, statusMoving};
@@ -223,7 +226,7 @@ void loop() {
       digitalWrite(LED_BUILTIN, 1);
  
 
-      
+      //get midi data from serial1
   rx_state++;
     switch (rx_state) {
       case 1:                     // first byte is always 255 for sync 
@@ -250,7 +253,7 @@ void loop() {
       
         
 
-//}
+//}//assign most recent serial
      if(!Serial1.available()){
         int xAxis =  cc_val1;
         int yAxis =  cc_val2;
@@ -266,7 +269,7 @@ void loop() {
 //        Serial.print(note);
 //        Serial.print(" ");
 //        Serial.println(velocity);
-
+  //mode select
         if (modes==0){
            animateDials(xAxis,yAxis,zAxis);
         }
@@ -297,10 +300,11 @@ void loop() {
 
   
 }
+//animate dials for 3 dimensions
 void animateDials(int valueX,int valueY,int valueZ){
   //define ranges in metres
-  float xMin = -0.65;
-  float xMax = 0.65;
+  float xMin = -0.065;
+  float xMax = 0.065;
   float xRange = xMax - xMin;
   float yMin = ARRAY_HEIGHT/2-0.065;
   float yMax = ARRAY_HEIGHT/2+0.065;
@@ -362,7 +366,7 @@ void animateKeyboard(int key){
   Serial.printf("I'm stationary at: %f %f %f\n",xCurrent, yCurrent, zCurrent);
 }
 
-
+//animate bpm for a given bpm
 void animateBPM(int bpm){ 
  Serial.printf("animating bpm %d\n",bpm);
  String intialSetup="focus=" + String(xCurrent,7) + " " + String(yCurrent,7) + " " + String(zCurrent,7) + " ";
@@ -414,6 +418,7 @@ float delayTime=(60/bpmforFrames)*1000/(2*numSteps);
  }
 
 }
+//used to perform multiple trials of the buffer timing latency
 void bufferLatency(){
   Serial.println("start");
   int times[50];
@@ -433,11 +438,13 @@ void bufferLatency(){
 
 
 }
+//just used to reset to 0,0 in xz plane
 void setXZ(float minimumX, float minimumZ){
     //moveObj(minimumX,yCurrent,zCurrent);
     //moveObj(xCurrent,yCurrent,minimumZ);
     moveObj(0,yCurrent,0);
 }
+//square spiral testing program
 void testAxis(){
       
    //frame and increment info
@@ -569,7 +576,7 @@ void testAxis(){
       
   }
   
-    
+//move obj function moves ovjects from old to new positions   
 
 void moveObj(float newXPos, float newYPos, float newZPos){
   Serial.printf("My old positions x: %f, y: %f, z: %f \n",xCurrent, yCurrent,zCurrent);
@@ -622,6 +629,7 @@ while(abs(xCurrent-newXPos)>stepSize || abs(yCurrent-newYPos)>stepSize || abs(zC
       int tFinal=micros();
       Serial.printf("total time taken is %d \n", tFinal-tStart);
  }
+ //command processing
 void processCommand(String command) {
   if ( command.startsWith("focus=") ) {
     const int n = parseFloats( command, command.indexOf('=') + 1 , pointPos, 3 );
